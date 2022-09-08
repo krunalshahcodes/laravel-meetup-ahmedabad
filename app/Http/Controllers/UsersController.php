@@ -4,19 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class UsersController extends Controller
 {
     public function index()
     {
         $users = User::orderBy('id', 'desc')->get();
-        return view('users/index', compact('users'));
+        // return view('users/index', compact('users'));
+        return Inertia::render('Users/List', [
+            'users' => $users
+        ]);
     }
 
     public function create()
     {
-        return view('users/create');
+        // return view('users/create');
+        return Inertia::render('Users/Create');
     }
 
     public function store(Request $request)
@@ -33,6 +39,6 @@ class UsersController extends Controller
 
         User::create($request->all());
 
-        return redirect()->route('users')->with('success', 'User has been created successfully');
+        return Redirect::route('users')->with('success', 'User has been created successfully');
     }
 }
